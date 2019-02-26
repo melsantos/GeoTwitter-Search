@@ -1,0 +1,4 @@
+pip==10.0.1
+python-decouple==3.1
+setuptools==39.0.1
+twitter==1.18.0
