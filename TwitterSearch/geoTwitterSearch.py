@@ -38,20 +38,21 @@ def main():
         
         try:
             if tweet['coordinates']:
-                print('Coords founds!')
-                try:
-                    url = re.match(r'.*(http?s://.*).*', tweet['text']).group(1)
-                    content = request.urlopen(url).read()
-                    soup = BeautifulSoup(content).title.string
-                    tweet['title'] = soup
-                    print('URL found! Page Title: %s' % soup)
-                except:
-                    print("Could not open url")
+                title = get_title(tweet)
+                if title:
+                    tweet['title'] = title
                 json.dump(tweet, tweet_out)
                 tweet_out.write('\n')
         except:
             pass
-
     tweet_out.close()
+
+def get_title(tweet):
+    try:
+        url = re.match(r'.*(http?s://.*).*', tweet['text']).group(1)
+        content = request.urlopen(url).read()
+        return BeautifulSoup(content).title.string
+    except:
+        return None
 
 main()
