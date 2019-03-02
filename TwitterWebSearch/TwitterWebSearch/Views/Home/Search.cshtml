@@ -1,0 +1,88 @@
+﻿@using TwitterWebSearch.Models
+@model TwitterWebSearch.Models.SearchViewModel
+@{
+    ViewBag.Title = "Search";
+}
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA95tVvipo5CN8GMr347c19CRrKokYWymE&callback=markIcons" async defer></script>
+<script type="text/javascript">
+
+    function showPosition(position) {
+        var coords = position.coords;
+        $("#lat").val(coords.latitude);
+        $("#lon").val(coords.longitude);
+        var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+
+        var myOptions = {
+            zoom: 10,
+            center: latlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+        };
+
+        var map = new google.maps.Map(document.getElementById("map"), myOptions);
+        var marker;
+        var i = 0;
+        var infowindow;
+        @{
+            int count = 0;
+            foreach (Tweet tweet in Model.Tweets)
+            {
+                <Text>
+                    i = @count;
+
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
+                        map: map
+                    });
+
+                    (function (i, marker) {
+                        google.maps.event.addListener(marker, 'click', function () {
+                            if (!infowindow) {
+                                infowindow = new google.maps.InfoWindow();
+                            }
+                            infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
+                            infowindow.open(map, marker);
+                        });
+                    })(i, marker);
+
+                </Text>
+                count++;
+            }
+         }
+
+    }
+
+    function markicons() {
+        navigator.geolocation.getCurrentPosition(showPosition);
+    }
+    window.onload = markicons;
+
+</script>
+<h2>Search</h2>
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form" }))
+        {
+            <div class="col-md-5">
+                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style="width:100%;" })
+            </div>
+            <input id="lat" name="latitude" style="display:none;" />
+            <input id="lon" name="longitude" style="display:none;" />
+            <div class="col-md-1">
+                <button type="submit">Search</button>
+            </div>  
+        }
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            ...relevant tweet 1
+            <hr />
+            ...relevant tweet 2
+            <hr />
+            ...for josh
+            <hr />
+        </div>
+        <div class="col-md-6">
+            <div id="map" style="width:100%;height:400px;"></div>
+        </div>
+    </div>
+</div>
