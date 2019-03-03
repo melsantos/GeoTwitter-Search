@@ -4,7 +4,52 @@
     ViewBag.Title = "Search";
 }
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA95tVvipo5CN8GMr347c19CRrKokYWymE&callback=markIcons" async defer></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script type="text/javascript">
+    function displayTweets() {
+        var tweetPost = document.getElementById("tweetPost");
+        //tweetPost.innerHTML = "";
+
+        // Fixme: Iterate through all tweets
+
+        var queryResult = document.createElement("div");
+        var tweetRank = document.createElement("div");
+        var tweetContent = document.createElement("div");
+        var tweetScore = document.createElement("div");
+
+        // Encapsulate each query result
+        queryResult.setAttribute("class", "row");
+        queryResult.setAttribute("style", "border-bottom:2px solid black");
+
+        // Fixme: Get tweet rank
+        tweetRank.setAttribute("class", "col-md-1");
+        tweetRank.setAttribute("style", "padding-top:10%;width:10%");
+        tweetRank.setAttribute("id", "tweetRank");
+        tweetRank.innerHTML = "Rank";
+
+        // Fixme: Get tweet content
+        tweetContent.setAttribute("class", "col-md-1");
+        tweetContent.setAttribute("style", "width:65%;");
+        twttr.widgets.createTweet(
+            '487075163129667584', // Fixme: Replace with tweet id
+            tweetContent,
+            {
+                theme: 'light'
+            }
+        );
+
+        // Fixme: Get tweet score
+        tweetScore.setAttribute("class", "col-md-1");
+        tweetScore.setAttribute("style", "padding-top:10%;width:25%;");
+        tweetScore.setAttribute("id", "tweetScore");
+        tweetScore.innerHTML = "Score";
+
+        queryResult.appendChild(tweetRank);
+        queryResult.appendChild(tweetContent);
+        queryResult.appendChild(tweetScore);
+        tweetPost.appendChild(queryResult);
+        alert("Ok");
+    }
 
     function showPosition(position) {
         var coords = position.coords;
@@ -22,32 +67,32 @@
         var marker;
         var i = 0;
         var infowindow;
-        @{
-            int count = 0;
-            foreach (Tweet tweet in Model.Tweets)
-            {
-                <Text>
-                    i = @count;
+@{
+    int count = 0;
+    foreach (Tweet tweet in Model.Tweets)
+    {
+        <Text>
+        i = @count;
 
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
-                        map: map
-                    });
+        marker = new google.maps.Marker({
+        position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
+        map: map
+        });
 
-                    (function (i, marker) {
-                        google.maps.event.addListener(marker, 'click', function () {
-                            if (!infowindow) {
-                                infowindow = new google.maps.InfoWindow();
-                            }
-                            infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
-                            infowindow.open(map, marker);
-                        });
-                    })(i, marker);
+        (function (i, marker) {
+        google.maps.event.addListener(marker, 'click', function () {
+        if (!infowindow) {
+        infowindow = new google.maps.InfoWindow();
+        }
+        infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
+        infowindow.open(map, marker);
+        });
+        })(i, marker);
 
-                </Text>
-                count++;
-            }
-         }
+        </Text>
+        count++;
+    }
+}
 
     }
 
@@ -59,30 +104,38 @@
 </script>
 <h2>Search</h2>
 <div class="container">
+    <!--style="background-image: linear-gradient(to bottom right, #70F4F4, #497CF2);-->
     <div class="row">
         @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form" }))
         {
             <div class="col-md-5">
-                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style="width:100%;" })
+                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;" })
             </div>
             <input id="lat" name="latitude" style="display:none;" />
             <input id="lon" name="longitude" style="display:none;" />
             <div class="col-md-1">
                 <button type="submit">Search</button>
-            </div>  
+            </div>
         }
     </div>
     <div class="row">
         <div class="col-md-6">
-            ...relevant tweet 1
-            <hr />
-            ...relevant tweet 2
-            <hr />
-            ...for josh
-            <hr />
-        </div>
-        <div class="col-md-6">
-            <div id="map" style="width:100%;height:400px;"></div>
+            <button type="button" onclick="displayTweets()">Test - Add Tweet</button>
+            <div class="row" style="border:2px solid black; width: 99%">
+                <div class="col-md-1" style="width:10%; text-align:center;">
+                    Rank
+                </div>
+                <div class="col-md-1" style="width:65%; text-align:center;">
+                    Tweet
+                </div>
+                <div class="col-md-1" style="width:25%; text-align:center;">
+                    Score
+                </div>
+            </div>
+            <div id="tweetPost" style="height: 450px; overflow:scroll"></div>
+            <div class="col-md-6">
+                <div id="map" style="width:100%;height:400px;"></div>
+            </div>
         </div>
     </div>
 </div>
