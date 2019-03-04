@@ -39,7 +39,7 @@
 
             // Encapsulate each query result
             queryResult.setAttribute("class", "row");
-            queryResult.setAttribute("style", "border-bottom:2px solid black");
+            queryResult.setAttribute("style", "width:95%; margin-left:1%; border-bottom:2px solid black");
             queryResult.setAttribute("id", "queryResult" + String(i+1));
 
             // Get tweet rank
@@ -50,10 +50,10 @@
 
             // Get tweet content
             tweetContent.setAttribute("class", "col-md-1");
-            tweetContent.setAttribute("style", "width:65%;");
+            tweetContent.setAttribute("style", "width:75%;");
             tweetContent.setAttribute("id", "tweetContent" + String(i + 1));
             twttr.widgets.createTweet(
-                '487075163129667584', // Fixme: Replace with tweet id
+                '1102451034872377344', // Fixme: Replace with tweet id
                 tweetContent,
                 {
                     theme: 'light'
@@ -62,7 +62,7 @@
 
             // Get tweet score
             tweetScore.setAttribute("class", "col-md-1");
-            tweetScore.setAttribute("style", "padding-top:10%;width:25%;");
+            tweetScore.setAttribute("style", "padding-top:10%;width:15%;");
             tweetScore.setAttribute("id", "tweetScore" + String(i+1));
             tweetScore.innerHTML = "Score"; // Fixme: Replace with tweet score
 
@@ -136,12 +136,12 @@
             </div>
             <input id="lat" name="latitude" style="display:none;" />
             <input id="lon" name="longitude" style="display:none;" />
-            <div class="col-md-1">
-                <button type="submit">Search</button>
+            <div class="col-md-1" style="margin-left:-15%">
+                <button type="submit" class="btn btn-info">Search</button>
             </div>
         }
     </div>
-    <div class="row">
+    <div class="row" style="padding-top:5%">
         <div class="col-md-6" style="margin-left: -2%;">
            
             <style>
