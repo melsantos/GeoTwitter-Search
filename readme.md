@@ -1,4 +1,4 @@
-﻿# GeoTwitter Search ![picture](GeoTwitter/img/logo40.png)
+﻿# GeoTwitter Search ![picture](TwitterStream/img/logo40.png)
 A search engine for geotagged Tweets built using the Twitter API and ElasticSearch
 
 ## Built With

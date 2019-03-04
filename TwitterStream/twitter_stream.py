@@ -12,7 +12,9 @@ token_secret =config('ACCESS_SECRET')
 
 cur_path = os.path.dirname(os.path.realpath(__file__))
 
-def main():
+# Connects to Twitter Stream and writes geotagged Tweet objects to geo_tweets directory. 
+# Files are timestamped by the date and time of when the program is executed
+def get_tweets():
     start = datetime.datetime.now()
     tweet_folder = 'geo_tweets'
     tweet_out = open(os.path.join(cur_path, tweet_folder, "%s tweets.json" % start.strftime('%m-%d %H-%M')), 'w+')
@@ -49,10 +51,10 @@ def main():
 
 def get_title(tweet):
     try:
-        url = re.match(r'.*(http?s://.*).*', tweet['text']).group(1)
+        url = re.match(r'.*(http?s://[^\s]+)', tweet['text']).group(1)
         content = request.urlopen(url).read()
         return BeautifulSoup(content).title.string
     except:
         return None
 
-main()
+get_tweets()
