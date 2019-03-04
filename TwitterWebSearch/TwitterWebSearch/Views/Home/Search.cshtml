@@ -20,14 +20,16 @@
         // Encapsulate each query result
         queryResult.setAttribute("class", "row");
         queryResult.setAttribute("style", "border-bottom:2px solid black");
+        queryResult.onmouseover = function () { tweetContent.style.opacity = ""; queryResult.style.boxShadow = "0px 0px 10px 2px DodgerBlue"; queryResult.style.cursor = "pointer" };
+        queryResult.onmouseout = function () { tweetContent.style.opacity = "0.95"; queryResult.style.boxShadow = "none"; queryResult.style.cursor = "default" };
 
-        // Fixme: Get tweet rank
+        // Get tweet rank
         tweetRank.setAttribute("class", "col-md-1");
         tweetRank.setAttribute("style", "padding-top:10%;width:10%");
         tweetRank.setAttribute("id", "tweetRank");
-        tweetRank.innerHTML = "Rank";
-
-        // Fixme: Get tweet content
+        tweetRank.innerHTML = "Rank"; // Fixme: Replace with tweet rank
+       
+        // Get tweet content
         tweetContent.setAttribute("class", "col-md-1");
         tweetContent.setAttribute("style", "width:65%;");
         twttr.widgets.createTweet(
@@ -38,17 +40,16 @@
             }
         );
 
-        // Fixme: Get tweet score
+        // Get tweet score
         tweetScore.setAttribute("class", "col-md-1");
         tweetScore.setAttribute("style", "padding-top:10%;width:25%;");
         tweetScore.setAttribute("id", "tweetScore");
-        tweetScore.innerHTML = "Score";
+        tweetScore.innerHTML = "Score"; // Fixme: Replace with tweet score
 
         queryResult.appendChild(tweetRank);
         queryResult.appendChild(tweetContent);
         queryResult.appendChild(tweetScore);
         tweetPost.appendChild(queryResult);
-        alert("Ok");
     }
 
     function showPosition(position) {
@@ -104,7 +105,7 @@
 </script>
 <h2>Search</h2>
 <div class="container">
-    <!--style="background-image: linear-gradient(to bottom right, #70F4F4, #497CF2);-->
+    <!--style="background-image: linear-gradient(to bottom right, #70F4F4, #497CF2);" -->
     <div class="row">
         @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form" }))
         {
@@ -119,20 +120,15 @@
         }
     </div>
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-6" style="margin-left: -2%;">
             <button type="button" onclick="displayTweets()">Test - Add Tweet</button>
             <div class="row" style="border:2px solid black; width: 99%">
-                <div class="col-md-1" style="width:10%; text-align:center;">
-                    Rank
-                </div>
-                <div class="col-md-1" style="width:65%; text-align:center;">
-                    Tweet
-                </div>
-                <div class="col-md-1" style="width:25%; text-align:center;">
-                    Score
-                </div>
+                <div class="col-md-1" style="width:10%; text-align:center;">Rank</div>
+                <div class="col-md-1" style="width:65%; text-align:center;">Tweet</div>
+                <div class="col-md-1" style="width:25%; text-align:center;">Score</div>
             </div>
-            <div id="tweetPost" style="height: 450px; overflow:scroll"></div>
+            <br>
+            <div id="tweetPost" style="margin-left: -2%; height: 450px; overflow-y:scroll; overflow-x:hidden"></div>
             <div class="col-md-6">
                 <div id="map" style="width:100%;height:400px;"></div>
             </div>
