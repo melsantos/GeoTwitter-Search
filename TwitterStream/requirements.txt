@@ -4,3 +4,4 @@ python-decouple==3.1
 setuptools==39.0.1
 soupsieve==1.8
 twitter==1.18.0
+elasticsearch>=6.0.0,<7.0.0
