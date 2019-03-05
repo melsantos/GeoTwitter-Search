@@ -3,7 +3,8 @@ from twitter.stream import TwitterStream, Timeout, HeartbeatTimeout, Hangup
 from twitter.oauth import OAuth
 from urllib import request
 from bs4 import BeautifulSoup
-import os, json, datetime, re
+from IndexTweets import IndexTweets
+import os, json, datetime, re, threading
 
 consumer_key = config('CONSUMER_KEY')
 consumer_secret = config('CONSUMER_SECRET')
@@ -16,8 +17,10 @@ cur_path = os.path.dirname(os.path.realpath(__file__))
 # Files are timestamped by the date and time of when the program is executed
 def get_tweets():
     start = datetime.datetime.now()
-    tweet_folder = 'geo_tweets'
-    tweet_out = open(os.path.join(cur_path, tweet_folder, "%s tweets.json" % start.strftime('%m-%d %H-%M')), 'w+')
+    print("Started at %s" % start)
+    it = IndexTweets()
+    # tweet_folder = 'tweet_log'
+    # tweet_out = open(os.path.join(cur_path, tweet_folder, "%s tweets.json" % start.strftime('%m-%d %H-%M')), 'w+')
     ts = TwitterStream(
         auth=OAuth(token, token_secret, consumer_key, consumer_secret))
     iterator = ts.statuses.sample()
@@ -43,11 +46,14 @@ def get_tweets():
                 title = get_title(tweet)
                 if title:
                     tweet['title'] = title
-                json.dump(tweet, tweet_out)
-                tweet_out.write('\n')
+                t = threading.Thread(target=it.indexLiveTweet, args=(json.dumps(tweet),))
+                t.start()
+                print(tweet)
+                # json.dump(tweet, tweet_out)
+                # tweet_out.write('\n')
         except:
             pass
-    tweet_out.close()
+    # tweet_out.close()
 
 def get_title(tweet):
     try:
@@ -57,4 +63,5 @@ def get_title(tweet):
     except:
         return None
 
-get_tweets()
+if __name__ == "__main__":
+    get_tweets()

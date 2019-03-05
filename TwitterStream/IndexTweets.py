@@ -6,7 +6,7 @@ es = Elasticsearch("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found
 
 class IndexTweets:
 
-    def str_is_json(myjson):
+    def str_is_json(self, myjson):
         try:
             json_object = json.loads(myjson)
         except ValueError as e:
@@ -26,9 +26,9 @@ class IndexTweets:
                      #index a new tweet with its id being that of its id from Twitter
                      es.index(index="geotwitter", doc_type="tweets", id=obj['id'], body=obj)
 
-    def indexLiveTweet(jsonObj):
+    def indexLiveTweet(self, jsonObj):
         #make a JSON object from the given string
-        if(str_is_json(jsonObj)):
+        if(self.str_is_json(jsonObj)):
             obj = json.loads(jsonObj)
             #index a new tweet with its id being that of its tweet id from Twitter
             es.index(index="geotwitter", doc_type="tweets", id=obj['id'], body=obj)
