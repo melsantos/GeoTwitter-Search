@@ -1,7 +1,8 @@
 import json, os
+import certifi #for CA certifications for elasticsearch
 from elasticsearch import Elasticsearch
 
-es = Elasticsearch()
+es = Elasticsearch("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243", http_auth=('elastic','thvjOYqdxl4INNEDvxOFXC3R'), use_ssl=True, verify_certs=True, ca_certs=certifi.where())
 
 class IndexTweets:
 
@@ -29,13 +30,28 @@ class IndexTweets:
         #make a JSON object from the given string
         if(str_is_json(jsonObj)):
             obj = json.loads(jsonObj)
-        #index a new tweet with its id being that of its tweet id from Twitter
-        es.index(index="geotwitter", doc_type="tweets", id=obj['id'], body=obj)
+            #index a new tweet with its id being that of its tweet id from Twitter
+            es.index(index="geotwitter", doc_type="tweets", id=obj['id'], body=obj)
 
-    def searchIndex(field, term):
-        results = es.search(index="geotwitter", body={'query': {'match': {field: term}}})
-        print("Got " + str(results['hits']['total']) +" Hits")
+    def searchIndexByID(id):
+        results = es.search(index="geotwitter", body={'query': {'match': {'_id': id}}})
+        return (results['hits']['hits'][0]['_source'])
+
+    def searchIndexByTweet(terms):
+        results = es.search(index="geotwitter", body={'query': {'match': {'text': terms}}})
+        jsonList = []
+        for i in results:
+            jsonList.append(results['hits']['hits'])
+        return jsonList
 
 #use this instance of the IndexTweets object to perform desired function(s)
 idxTwts = IndexTweets
-print(idxTwts.searchIndex("text", "own"))
+
+#getting the text field of a tweet by ID
+j = idxTwts.searchIndexByID("1100829985605107712")
+print(j['text'])
+
+#searching by a query and printing matching results
+j = idxTwts.searchIndexByTweet("very own")
+for idxI, i in enumerate(j):
+    print("Score: " + str(i[idxI]['_score']) + "\nTweet: " + i[idxI]['_source']['text'] + "\n")
