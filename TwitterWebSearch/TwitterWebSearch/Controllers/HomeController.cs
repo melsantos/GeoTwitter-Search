@@ -27,12 +27,24 @@ namespace TwitterWebSearch.Controllers
             return new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lng));
         }
 
+        public static List<Tweet> GetTweets(string query)
+        {
+            //var requestUri = string.Format("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243/geotwitter/_search?q=text:{0}", Uri.EscapeDataString(query));
+           // var request = WebRequest.Create(requestUri);
+            //request.ContentType = "application/json; charset=utf-8";
+           // var response = request.GetResponse();
+            //here we will convert our json response to a list of 
+            //tweet objects. Currently getting unauthorized error on web request because there are no crednetials entered
+            return new List<Tweet>();
+        }
+
         [HttpGet]
-        public ActionResult Search()
+        public ActionResult Search(string query, string distance)
         {
             SearchViewModel model = new SearchViewModel
             {
-                SearchText = "",
+                SearchText = query == null ? "" : query,
+                Distance = distance == null ? 0 : int.Parse(distance),
                 Tweets = new List<Tweet>()
             };
 
@@ -44,14 +56,17 @@ namespace TwitterWebSearch.Controllers
         {
             GeoCoordinate coord = new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lon)); //my position
             string searchText = model.SearchText; //what the user searched
-            List<Tweet> rankedTweets = new List<Tweet>(); //get list from lucene using searchText above
+            int distance = model.Distance;
 
-            //getdistanceto returns meters so doing 100 miles * 1609.344 (meters per mile) to convert meters
+            List<Tweet> rankedTweets = GetTweets(searchText);
+
+            //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
+            //if distance not entered default at 100 miles
             model.Tweets = rankedTweets
-                .Where(val => new GeoCoordinate(val.Latitude, val.Longitude).GetDistanceTo(coord) < (100 * 1609.344))
-                .ToList(); 
+                .Where(val => new GeoCoordinate(val.Latitude, val.Longitude).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
+                .ToList();
 
-            return View(model);
+            return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString() });
         }
 
     }

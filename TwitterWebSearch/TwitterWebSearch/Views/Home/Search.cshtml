@@ -131,12 +131,16 @@
     <div class="row">
         @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form" }))
         {
-            <div class="col-md-5">
-                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;" })
+            <div class="col-md-3">
+                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })
+            </div>
+            <div class="col-md-2">
+                @Html.DropDownListFor(m => m.Distance, Enumerable.Range(1, 10).Select(i => new SelectListItem { Value = (i * 10).ToString(), Text = (i * 10).ToString() }),
+                            (Model.Distance == 0 ? "Distance (mi)" : Model.Distance.ToString()), new { @style= "padding:8px;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })            
             </div>
             <input id="lat" name="latitude" style="display:none;" />
             <input id="lon" name="longitude" style="display:none;" />
-            <div class="col-md-1" style="margin-left:-15%">
+            <div class="col-md-1">
                 <button type="submit" class="btn btn-info">Search</button>
             </div>
         }

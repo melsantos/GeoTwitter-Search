@@ -8,6 +8,7 @@ namespace TwitterWebSearch.Models
     public class SearchViewModel
     {
         public string SearchText { get; set; } //search text entered in the form
+        public int Distance { get; set; }
         public List<Tweet> Tweets { get; set; } //a list of tweets returned after entering the search form
     }
 
