@@ -1,0 +1,8 @@
+beautifulsoup4==4.7.1
+certifi==2018.11.29
+elasticsearch==6.3.1
+python-decouple==3.1
+soupsieve==1.8
+twitter==1.18.0
+urllib3==1.24.1
+virtualenv==16.4.3

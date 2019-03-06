@@ -4,7 +4,75 @@
     ViewBag.Title = "Search";
 }
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA95tVvipo5CN8GMr347c19CRrKokYWymE&callback=markIcons" async defer></script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 <script type="text/javascript">
+    function applyEffects(numIters) {
+        var i;
+        for (i = 0; i < numIters; i++) {
+            let queryResult = document.getElementById("queryResult" + String(i + 1));
+            let tweetContent = document.getElementById("tweetContent" + String(i + 1));
+
+            queryResult.addEventListener('mouseover', function () {
+                queryResult.style.boxShadow = "0px 0px 10px 2px DodgerBlue";
+                queryResult.style.cursor = "pointer";
+                tweetContent.style.opacity = "";
+            }, false);
+            
+            queryResult.addEventListener('mouseout', function () {
+                queryResult.style.boxShadow = "none";
+                queryResult.style.cursor = "default";
+                tweetContent.style.opacity = "0.95";
+            }, false);           
+        }
+    }
+    function displayTweets() {
+        var i;
+        var numIters = 10; // Fixme: Change to be length of tweet list
+        var tweetPost = document.getElementById("tweetPost");
+        //tweetPost.innerHTML = "";
+
+        for (i = 0; i < numIters; i++) {
+            var queryResult = document.createElement("div");
+            var tweetRank = document.createElement("div");
+            var tweetContent = document.createElement("div");
+            var tweetScore = document.createElement("div");
+
+            // Encapsulate each query result
+            queryResult.setAttribute("class", "row");
+            queryResult.setAttribute("style", "width:95%; margin-left:1%; border-bottom:2px solid black");
+            queryResult.setAttribute("id", "queryResult" + String(i+1));
+
+            // Get tweet rank
+            tweetRank.setAttribute("class", "col-md-1");
+            tweetRank.setAttribute("style", "padding-top:10%;width:10%");
+            tweetRank.setAttribute("id", "tweetRank" + String(i + 1));
+            tweetRank.innerHTML = String(i+1); // Fixme: Replace with tweet rank
+
+            // Get tweet content
+            tweetContent.setAttribute("class", "col-md-1");
+            tweetContent.setAttribute("style", "width:75%;");
+            tweetContent.setAttribute("id", "tweetContent" + String(i + 1));
+            twttr.widgets.createTweet(
+                '1102451034872377344', // Fixme: Replace with tweet id
+                tweetContent,
+                {
+                    theme: 'light'
+                }
+            );
+
+            // Get tweet score
+            tweetScore.setAttribute("class", "col-md-1");
+            tweetScore.setAttribute("style", "padding-top:10%;width:15%;");
+            tweetScore.setAttribute("id", "tweetScore" + String(i+1));
+            tweetScore.innerHTML = "Score"; // Fixme: Replace with tweet score
+
+            queryResult.appendChild(tweetRank);
+            queryResult.appendChild(tweetContent);
+            queryResult.appendChild(tweetScore);
+            tweetPost.appendChild(queryResult);
+        }
+        applyEffects(numIters);
+    }
 
     function showPosition(position) {
         var coords = position.coords;
@@ -27,31 +95,32 @@
             foreach (Tweet tweet in Model.Tweets)
             {
                 <Text>
-                    i = @count;
+                i = @count;
 
-                    marker = new google.maps.Marker({
-                        position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
-                        map: map
-                    });
+                marker = new google.maps.Marker({
+                position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
+                map: map
+                });
 
-                    (function (i, marker) {
-                        google.maps.event.addListener(marker, 'click', function () {
-                            if (!infowindow) {
-                                infowindow = new google.maps.InfoWindow();
-                            }
-                            infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
-                            infowindow.open(map, marker);
-                        });
-                    })(i, marker);
+                (function (i, marker) {
+                google.maps.event.addListener(marker, 'click', function () {
+                if (!infowindow) {
+                infowindow = new google.maps.InfoWindow();
+                }
+                infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
+                infowindow.open(map, marker);
+                });
+                })(i, marker);
 
                 </Text>
                 count++;
             }
-         }
+        }
 
     }
 
     function markicons() {
+        displayTweets()
         navigator.geolocation.getCurrentPosition(showPosition);
     }
     window.onload = markicons;
@@ -63,23 +132,44 @@
         @using (Html.BeginForm("Search", "Home", FormMethod.Post, new { @class = "form" }))
         {
             <div class="col-md-5">
-                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style="width:100%;" })
+                @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;" })
             </div>
             <input id="lat" name="latitude" style="display:none;" />
             <input id="lon" name="longitude" style="display:none;" />
-            <div class="col-md-1">
-                <button type="submit">Search</button>
-            </div>  
+            <div class="col-md-1" style="margin-left:-15%">
+                <button type="submit" class="btn btn-info">Search</button>
+            </div>
         }
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            ...relevant tweet 1
-            <hr />
-            ...relevant tweet 2
-            <hr />
-            ...for josh
-            <hr />
+    <div class="row" style="padding-top:5%">
+        <div class="col-md-6" style="margin-left: -2%;">
+           
+            <style>
+                ::-webkit-scrollbar {
+                    width: 12px;
+                }
+
+                ::-webkit-scrollbar-track {
+                    box-shadow: inset 0 0 5px grey;
+                    border-radius: 10px;
+                }
+
+                ::-webkit-scrollbar-thumb {
+                    background: #0080ff;
+                    border-radius: 10px;
+                }
+
+                ::-webkit-scrollbar-thumb:hover {
+                    background: #0059b3;
+                }
+            </style>
+   
+            <div class="row" style="border:2px solid black; width: 99%">
+                <div class="col-md-1" style="width:10%; text-align:center;">Rank</div>
+                <div class="col-md-1" style="width:65%; text-align:center;">Tweet</div>
+                <div class="col-md-1" style="width:25%; text-align:center;">Score</div>
+            </div>
+            <div id="tweetPost" style="margin-left: -2%; height: 450px; overflow-y:scroll; overflow-x:hidden"></div>
         </div>
         <div class="col-md-6">
             <div id="map" style="width:100%;height:400px;">
