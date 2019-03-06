@@ -15,8 +15,8 @@ namespace TwitterWebSearch.Models
     //this class represents a single tweet
     public class Tweet
     {
-        public int TweetID { get; set; }
-        public int TweetRank { get; set; }
+        public string TweetID { get; set; }
+        public double TweetRank { get; set; }
         public double Latitude { get; set; }
         public double Longitude { get; set; }
         public string tweetLink { get; set; }

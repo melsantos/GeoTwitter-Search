@@ -27,11 +27,24 @@
     }
     function displayTweets() {
         var i;
-        var numIters = 10; // Fixme: Change to be length of tweet list
+        var numIters = @Model.Tweets.Count; // Length of tweet list
         var tweetPost = document.getElementById("tweetPost");
-        //tweetPost.innerHTML = "";
 
-        for (i = 0; i < numIters; i++) {
+        var tweetIDs = [];
+        var tweetScores = [];
+
+        @{ 
+            foreach (Tweet tweet in Model.Tweets)
+            {
+                <text>
+                    tweetIDs.push("@tweet.TweetID");
+                    tweetScores.push(@tweet.TweetRank);
+                </text>
+
+            }
+        }
+
+        for (i = 0; i < numIters && i < 10; i++) {
             var queryResult = document.createElement("div");
             var tweetRank = document.createElement("div");
             var tweetContent = document.createElement("div");
@@ -46,14 +59,14 @@
             tweetRank.setAttribute("class", "col-md-1");
             tweetRank.setAttribute("style", "padding-top:10%;width:10%");
             tweetRank.setAttribute("id", "tweetRank" + String(i + 1));
-            tweetRank.innerHTML = String(i+1); // Fixme: Replace with tweet rank
+            tweetRank.innerHTML = String(i+1); // Tweet rank
 
             // Get tweet content
             tweetContent.setAttribute("class", "col-md-1");
             tweetContent.setAttribute("style", "width:75%;");
             tweetContent.setAttribute("id", "tweetContent" + String(i + 1));
             twttr.widgets.createTweet(
-                '1102451034872377344', // Fixme: Replace with tweet id
+                tweetIDs[i], // Tweet id
                 tweetContent,
                 {
                     theme: 'light'
@@ -63,8 +76,8 @@
             // Get tweet score
             tweetScore.setAttribute("class", "col-md-1");
             tweetScore.setAttribute("style", "padding-top:10%;width:15%;");
-            tweetScore.setAttribute("id", "tweetScore" + String(i+1));
-            tweetScore.innerHTML = "Score"; // Fixme: Replace with tweet score
+            tweetScore.setAttribute("id", "tweetScore" + String(i + 1));
+            tweetScore.innerHTML = tweetScores[i]; // Tweet score
 
             queryResult.appendChild(tweetRank);
             queryResult.appendChild(tweetContent);
