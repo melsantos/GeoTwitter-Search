@@ -68,45 +68,42 @@ namespace TwitterWebSearch.Controllers
 
             return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString() });
         }
-        
+       
         // TESTBENCH
-        /*
-        [HttpPost]
-        public ActionResult Search(SearchViewModel model, string lat, string lon)
-        {
-            GeoCoordinate coord = new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lon)); //my position
-            string searchText = model.SearchText; //what the user searched
-            int distance = model.Distance;
+        //[HttpPost]
+        //public ActionResult Search(SearchViewModel model, string lat, string lon)
+        //{
+        //    GeoCoordinate coord = new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lon)); //my position
+        //    string searchText = model.SearchText; //what the user searched
 
-            List<Tweet> rankedTweets = new List<Tweet>();
+        //    List<Tweet> rankedTweets = new List<Tweet>();
 
-            Tweet t1 = new Tweet();
-            t1.TweetID = "1102451034872377344";
-            t1.TweetRank = 1.23456;
-            t1.Latitude = 33.834492;
-            t1.Longitude = -117.915642;
-            t1.tweetLink = "www.twitter.com";
-            t1.tweetText = "Sample tweet 1";
+        //    Tweet t1 = new Tweet();
+        //    t1.TweetID = "1102451034872377344";
+        //    t1.TweetRank = 1.23456;
+        //    t1.Latitude = 33.834492;
+        //    t1.Longitude = -117.915642;
+        //    t1.tweetLink = "www.twitter.com";
+        //    t1.tweetText = "Sample tweet 1";
 
-            Tweet t2 = new Tweet();
-            t2.TweetID = "1102451034872377344";
-            t2.TweetRank = 1.2;
-            t2.Latitude = 33.980602;
-            t2.Longitude = -117.375496;
-            t2.tweetLink = "www.twitter.com";
-            t2.tweetText = "Sample tweet 2";
+        //    Tweet t2 = new Tweet();
+        //    t2.TweetID = "1102451034872377344";
+        //    t2.TweetRank = 1.2;
+        //    t2.Latitude = 33.980602;
+        //    t2.Longitude = -117.375496;
+        //    t2.tweetLink = "www.twitter.com";
+        //    t2.tweetText = "Sample tweet 2";
 
 
-            rankedTweets.Add(t1);
-            rankedTweets.Add(t2);
-            //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
-            //if distance not entered default at 100 miles
-            model.Tweets = rankedTweets;
-                .Where(val => new GeoCoordinate(val.Latitude, val.Longitude).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
-                .ToList();
+        //    rankedTweets.Add(t1);
+        //    rankedTweets.Add(t2);
+            
+        //    // Currently displays all tweets, regardless of distance
+        //    model.Tweets = rankedTweets;
 
-            return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString() });
-        }
-        */
+        //    return View(model);
+        //    //return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString() });
+        //}
+        
     }
 }
