@@ -42,6 +42,8 @@ namespace TwitterWebSearch.Controllers
 
             var response = elasticClient.Search<Tweet>(s => s
             .Type("tweets")
+            .From(0)
+            .Size(10000)
             .MatchAll()
             //.Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
             );
@@ -71,9 +73,9 @@ namespace TwitterWebSearch.Controllers
         }
 
         [HttpPost]
-        public ActionResult Search(SearchViewModel model, string lat, string lon)
+        public ActionResult Search(SearchViewModel model, string latitude, string longitude)
         {
-            GeoCoordinate coord = new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lon)); //my position
+            GeoCoordinate coord = new GeoCoordinate(Convert.ToDouble(latitude), Convert.ToDouble(longitude)); //my position
             string searchText = model.SearchText; //what the user searched
             int distance = model.Distance;
 
