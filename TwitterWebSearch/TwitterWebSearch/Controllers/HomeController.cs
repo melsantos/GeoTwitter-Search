@@ -45,7 +45,14 @@ namespace TwitterWebSearch.Controllers
             .MatchAll()
             //.Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
             );
+
             List<Tweet> tweets = response.Hits.Select(val => val.Source).ToList();
+
+            //set the rank as the order in the list
+            for (int i = 0; i < tweets.Count; i++)
+            {
+                tweets[i].rank = (i + 1);
+            }
 
             return tweets;
         }

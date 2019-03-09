@@ -16,6 +16,7 @@ namespace TwitterWebSearch.Models
     public class Tweet
     {
         public string id_str { get; set; }
+        public int rank { get; set; }
         public string text { get; set; }
         public User user { get; set; }
         public Geo geo { get; set; }

@@ -38,8 +38,8 @@
             foreach (Tweet tweet in Model.Tweets)
             {
                 <text>
-                    tweetIDs.push("@tweet.TweetID");
-                    tweetScores.push(@tweet.TweetRank);
+                    tweetIDs.push("@tweet.id_str");
+                    tweetScores.push(@tweet.rank);
                 </text>
 
             }
@@ -121,7 +121,7 @@
                 if (!infowindow) {
                 infowindow = new google.maps.InfoWindow();
                 }
-                infowindow.setContent("<a href=''>Tweet, Rank: </a><br />@tweet.text");
+                infowindow.setContent("<a href=''>Tweet, Rank: @tweet.rank</a><br />@tweet.text");
                 infowindow.open(map, marker);
                 });
                 })(i, marker);
