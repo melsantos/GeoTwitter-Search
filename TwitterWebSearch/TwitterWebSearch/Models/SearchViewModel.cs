@@ -12,20 +12,6 @@ namespace TwitterWebSearch.Models
         public List<Tweet> Tweets { get; set; } //a list of tweets returned after entering the search form
     }
 
-    /*
-     "_source": {
-                      "text": "Jo també sóc sòcia de @omnium i n’estic molt orgullosa!!! @ La Roca, Cataluna, Spain https://t.co/lK2x1cYBrH",
-                      "id": 1100827888465690600,
-                      "user": {
-                        "id": 150952599,                       
-                        "followers_count": 2003,
-                      },
-                      "geo": {
-                        "coordinates": [41.58611426, 2.32474123]
-                      },
-                    },
-         */
-
     //this class represents a single tweet
     public class Tweet
     {
