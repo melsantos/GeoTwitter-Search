@@ -33,8 +33,6 @@ namespace TwitterWebSearch.Controllers
 
         public static List<Tweet> GetTweets(string query)
         {
-            //List<string> querySplit = query.Split(new Char[] { ',', ' ' }).ToList();
-
             ConnectionSettings connectionSettings = new ConnectionSettings(
                 new Uri("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243"))
                 .DefaultIndex("geotwitter")
@@ -42,19 +40,21 @@ namespace TwitterWebSearch.Controllers
             ElasticClient elasticClient = new ElasticClient(connectionSettings);
 
             var response = elasticClient.Search<Tweet>(s => s
-            .Type("tweets")
-            .From(0)
-            .Size(10000)
-            .Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
+                .Type("tweets")
+                .From(0)
+                .Size(10000)
+                .Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
             );
 
-            List<Tweet> tweets = response.Hits.Select(val => val.Source).ToList();
-
-            //set the rank as the order in the list
-            for (int i = 0; i < tweets.Count; i++)
+            List<Tweet> tweets = new List<Tweet>();
+            Tweet tweet;
+            foreach (IHit<Tweet> hit in response.Hits)
             {
-                tweets[i].rank = (i + 1);
+                tweet = hit.Source;
+                tweet.score = hit.Score.GetValueOrDefault();
+                tweets.Add(tweet);
             }
+            tweets = tweets.OrderByDescending(val => val.score).ToList(); //make sure tweets are sorted by score
 
             return tweets;
         }

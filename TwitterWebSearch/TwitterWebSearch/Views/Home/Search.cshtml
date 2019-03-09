@@ -40,7 +40,7 @@
             {
                 <text>
                     tweetIDs.push("@tweet.id_str");
-                    tweetScores.push(@tweet.rank);
+                    tweetScores.push(@tweet.score);
                 </text>
 
             }
@@ -122,7 +122,7 @@
                                 infowindow = new google.maps.InfoWindow();
                             }
 
-                            infowindow.setContent("User: @tweet.user.name, Rank: @tweet.rank<br /><a href='@(tweet.entities.urls.Count > 0 ? tweet.entities.urls[0].url : "")' target='_blank'>Link</a>");
+                            infowindow.setContent("User: @tweet.user.name, Rank: @count<br /><a href='@(tweet.entities.urls.Count > 0 ? tweet.entities.urls[0].url : "")' target='_blank'>Link</a>");
                             infowindow.open(map, marker);
                         });
                     })(i, marker);
