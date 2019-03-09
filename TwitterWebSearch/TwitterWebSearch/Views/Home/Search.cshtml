@@ -2,6 +2,7 @@
 @model TwitterWebSearch.Models.SearchViewModel
 @{
     ViewBag.Title = "Search";
+    List<int> distances = new List<int>{10, 50, 100, 1000, 2000, 3000 };
 }
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA95tVvipo5CN8GMr347c19CRrKokYWymE&callback=markIcons" async defer></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -95,7 +96,7 @@
         var latlng = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
 
         var myOptions = {
-            zoom: 10,
+            zoom: 5,
             center: latlng,
             mapTypeId: google.maps.MapTypeId.ROADMAP
         };
@@ -109,22 +110,22 @@
             foreach (Tweet tweet in Model.Tweets)
             {
                 <Text>
-                i = @count;
+                    i = @count;
+                    marker = new google.maps.Marker({
+                        position: new google.maps.LatLng(@tweet.geo.coordinates[0], @tweet.geo.coordinates[1]),
+                        map: map
+                    });
 
-                marker = new google.maps.Marker({
-                position: new google.maps.LatLng(@tweet.geo.coordinates[1], @tweet.geo.coordinates[1]),
-                map: map
-                });
+                    (function (i, marker) {
+                        google.maps.event.addListener(marker, 'click', function () {
+                            if (!infowindow) {
+                                infowindow = new google.maps.InfoWindow();
+                            }
 
-                (function (i, marker) {
-                google.maps.event.addListener(marker, 'click', function () {
-                if (!infowindow) {
-                infowindow = new google.maps.InfoWindow();
-                }
-                infowindow.setContent("<a href=''>Tweet, Rank: @tweet.rank</a><br />@tweet.text");
-                infowindow.open(map, marker);
-                });
-                })(i, marker);
+                            infowindow.setContent("User: @tweet.user.name, Rank: @tweet.rank<br /><a href='@(tweet.entities.urls.Count > 0 ? tweet.entities.urls[0].url : "")' target='_blank'>Link</a>");
+                            infowindow.open(map, marker);
+                        });
+                    })(i, marker);
 
                 </Text>
                 count++;
@@ -149,7 +150,7 @@
                 @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(m => m.Distance, Enumerable.Range(1, 10).Select(i => new SelectListItem { Value = (i * 10).ToString(), Text = (i * 10).ToString() }),
+                @Html.DropDownListFor(m => m.Distance, distances.Select(i => new SelectListItem { Value = (i).ToString(), Text = (i == 1000 ? "1k" : (i == 2000 ? "2k" : (i == 3000 ? "3k" : i.ToString())))}),
                             (Model.Distance == 0 ? "Distance (mi)" : Model.Distance.ToString()), new { @style= "padding:8px;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })            
             </div>
             <input id="lat" name="latitude" style="display:none;" />

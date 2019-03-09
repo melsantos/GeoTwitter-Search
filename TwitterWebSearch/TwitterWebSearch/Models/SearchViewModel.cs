@@ -20,6 +20,7 @@ namespace TwitterWebSearch.Models
         public string text { get; set; }
         public User user { get; set; }
         public Geo geo { get; set; }
+        public Entity entities { get; set; }
     }
 
     public class Geo
@@ -30,7 +31,18 @@ namespace TwitterWebSearch.Models
     public class User
     {
         public string id_str { get; set; }
+        public string name { get; set; }
         public int followers_count { get; set; }
+    }
+
+    public class Entity
+    {
+        public List<Url> urls { get; set; }
+    }
+
+    public class Url
+    {
+        public string url { get; set; }
     }
 
 }
