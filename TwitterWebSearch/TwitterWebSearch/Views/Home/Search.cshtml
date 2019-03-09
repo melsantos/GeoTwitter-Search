@@ -98,7 +98,7 @@
                 i = @count;
 
                 marker = new google.maps.Marker({
-                position: new google.maps.LatLng(@tweet.Latitude, @tweet.Longitude),
+                position: new google.maps.LatLng(@tweet.geo.coordinates[1], @tweet.geo.coordinates[1]),
                 map: map
                 });
 
@@ -107,7 +107,7 @@
                 if (!infowindow) {
                 infowindow = new google.maps.InfoWindow();
                 }
-                infowindow.setContent("<a href='@tweet.tweetLink'>Tweet, Rank: @tweet.TweetRank</a><br />@tweet.tweetText");
+                infowindow.setContent("<a href=''>Tweet, Rank: </a><br />@tweet.text");
                 infowindow.open(map, marker);
                 });
                 })(i, marker);

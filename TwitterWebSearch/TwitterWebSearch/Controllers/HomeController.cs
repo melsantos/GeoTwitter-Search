@@ -7,6 +7,10 @@ using TwitterWebSearch.Models;
 using System.Device.Location;
 using System.Net;
 using System.Xml.Linq;
+using System.Text;
+using Nest;
+using GeoCoordinate = System.Device.Location.GeoCoordinate;
+using Elasticsearch.Net;
 
 namespace TwitterWebSearch.Controllers
 {
@@ -29,13 +33,21 @@ namespace TwitterWebSearch.Controllers
 
         public static List<Tweet> GetTweets(string query)
         {
-            //var requestUri = string.Format("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243/geotwitter/_search?q=text:{0}", Uri.EscapeDataString(query));
-           // var request = WebRequest.Create(requestUri);
-            //request.ContentType = "application/json; charset=utf-8";
-           // var response = request.GetResponse();
-            //here we will convert our json response to a list of 
-            //tweet objects. Currently getting unauthorized error on web request because there are no crednetials entered
-            return new List<Tweet>();
+
+            ConnectionSettings connectionSettings = new ConnectionSettings(
+                new Uri("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243"))
+                .DefaultIndex("geotwitter")
+                .BasicAuthentication("rgray003", "elastic");
+            ElasticClient elasticClient = new ElasticClient(connectionSettings);
+
+            var response = elasticClient.Search<Tweet>(s => s
+            .Type("tweets")
+            .MatchAll()
+            //.Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
+            );
+            List<Tweet> tweets = response.Hits.Select(val => val.Source).ToList();
+
+            return tweets;
         }
 
         [HttpGet]
@@ -63,7 +75,7 @@ namespace TwitterWebSearch.Controllers
             //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
             //if distance not entered default at 100 miles
             model.Tweets = rankedTweets
-                .Where(val => new GeoCoordinate(val.Latitude, val.Longitude).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
+                .Where(val => new GeoCoordinate(val.geo.coordinates[1], val.geo.coordinates[0]).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
                 .ToList();
 
             return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString() });

@@ -182,3 +182,7 @@ C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\Twitter
 C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\obj\Debug\TwitterWebSearch.csproj.CopyComplete
 C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\obj\Debug\TwitterWebSearch.dll
 C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\obj\Debug\TwitterWebSearch.pdb
+C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\bin\Elasticsearch.Net.dll
+C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\bin\Nest.dll
+C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\bin\Elasticsearch.Net.xml
+C:\Users\ryans\Source\Repos\CS172-UCR\GeoTwitter-Search\TwitterWebSearch\TwitterWebSearch\bin\Nest.xml
