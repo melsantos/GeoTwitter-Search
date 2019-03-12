@@ -1,6 +1,25 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+    <style>
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            box-shadow: inset 0 0 5px grey;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #0080ff;
+            border-radius: 10px;
+        }
+
+            ::-webkit-scrollbar-thumb:hover {
+                background: #0059b3;
+            }
+    </style>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Twitter Search</title>
@@ -22,7 +41,7 @@
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Search", "Search", "Home")</li>
                 </ul>
-                <img src="~/Images/twitter_icon.png" style="margin-left:23%;width:5%; height:5%" ;alt="Twitter Icon">
+                <img src="~/Images/geo_twitter_logo.png" style="margin-left:23%;width:4%; height:4%" alt="Twitter Icon">
             </div>
             
         </div>

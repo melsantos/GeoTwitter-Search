@@ -2,8 +2,7 @@
 @model TwitterWebSearch.Models.SearchViewModel
 @{
     ViewBag.Title = "Search";
-    List<int> distances = new List<int>{10, 50, 100, 1000, 2000, 3000 };
-    List<string> searchTypes = new List<string> { "Filter By", "Rank", "Popularity" };
+    List<int> distances = new List<int> { 10, 50, 100, 1000, 2000, 3000 };
 }
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA95tVvipo5CN8GMr347c19CRrKokYWymE&callback=markIcons" async defer></script>
 <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
@@ -151,11 +150,13 @@
                 @Html.TextBoxFor(m => m.SearchText, new { @class = "form-control", @style = "width:100%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(m => m.Distance, distances.Select(i => new SelectListItem { Value = (i).ToString(), Text = (i == 1000 ? "1k" : (i == 2000 ? "2k" : (i == 3000 ? "3k" : i.ToString())))}),
-                            (Model.Distance == 0 ? "Distance (mi)" : Model.Distance.ToString()), new { @style= "padding:8px;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })            
+                @Html.DropDownListFor(m => m.Distance, distances.Select(i => new SelectListItem { Value = (i).ToString(), Text = (i == 1000 ? "1k" : (i == 2000 ? "2k" : (i == 3000 ? "3k" : i.ToString()))) }),
+                 (Model.Distance == 0 ? "Distance (mi)" : Model.Distance.ToString()), new { @style = "padding:8px;margin-right:-5%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })            
             </div>
             <div class="col-md-2">
-                @Html.DropDownListFor(m => m.SearchType, searchTypes.Select(i => new SelectListItem { Value = (i).ToString(), Text = (i).ToString()}), new { @style = "padding:8px;margin-left:-30%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })
+                @Html.DropDownListFor(m => m.SearchType, new List<SelectListItem> { new SelectListItem{Text="Rank", Value="Rank"},
+                                                                                    new SelectListItem{Text="Popularity", Value="Popularity"}}, "Sort By",
+                                                                                    new { @style = "padding:8px;margin-left:-40%;border:0px;box-shadow:0px 1px 3px rgba(50,50,93,0.15), 0px 1px 0px rgba(0,0,0,0.02)" })
             </div>
             <input id="lat" name="latitude" style="display:none;" />
             <input id="lon" name="longitude" style="display:none;" />
@@ -166,27 +167,6 @@
     </div>
     <div class="row" style="padding-top:5%">
         <div class="col-md-6" style="margin-left: -2%;">
-           
-            <style>
-                ::-webkit-scrollbar {
-                    width: 12px;
-                }
-
-                ::-webkit-scrollbar-track {
-                    box-shadow: inset 0 0 5px grey;
-                    border-radius: 10px;
-                }
-
-                ::-webkit-scrollbar-thumb {
-                    background: #0080ff;
-                    border-radius: 10px;
-                }
-
-                ::-webkit-scrollbar-thumb:hover {
-                    background: #0059b3;
-                }
-            </style>
-   
             <div class="row" style="border:2px solid black; width: 99%">
                 <div class="col-md-1" style="width:10%; text-align:center;">Rank</div>
                 <div class="col-md-1" style="width:65%; text-align:center;">Tweet</div>
