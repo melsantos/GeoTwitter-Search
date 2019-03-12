@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -10,6 +10,7 @@ namespace TwitterWebSearch.Models
         public string SearchText { get; set; } //search text entered in the form
         public int Distance { get; set; }
         public List<Tweet> Tweets { get; set; } //a list of tweets returned after entering the search form
+        public string SearchType { get; set; } // Return results based on search type (i.e popularity, highest rank, etc.) 
     }
 
     //this class represents a single tweet
