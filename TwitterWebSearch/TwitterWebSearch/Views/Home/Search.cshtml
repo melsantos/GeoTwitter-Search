@@ -106,7 +106,7 @@
         var i = 0;
         var infowindow;
         @{
-            int count = 0;
+            int count = 1;
             foreach (Tweet tweet in Model.Tweets)
             {
                 <Text>
@@ -122,7 +122,7 @@
                                 infowindow = new google.maps.InfoWindow();
                             }
 
-                            infowindow.setContent("User: @tweet.user.name, Rank: @count<br /><a href='@(tweet.entities.urls.Count > 0 ? tweet.entities.urls[0].url : "")' target='_blank'>Link</a>");
+                            infowindow.setContent("User: @tweet.user.name, Rank: @count <br /><a href='@(tweet.entities.urls.Count > 0 ? tweet.entities.urls[0].url : "")' target='_blank'>Link</a>");
                             infowindow.open(map, marker);
                         });
                     })(i, marker);
