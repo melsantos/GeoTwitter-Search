@@ -79,7 +79,7 @@ def main():
     while retries > 0:
         print("Retries left: %d" % retries)
         while iterator:
-            print("Iterator exists")
+            print("Connection exists")
             consume_tweets(iterator)
             time.sleep(20)
             iterator = connect()

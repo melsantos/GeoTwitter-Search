@@ -33,7 +33,6 @@ namespace TwitterWebSearch.Controllers
 
         public static List<Tweet> GetTweets(string query)
         {
-            //List<string> querySplit = query.Split(new Char[] { ',', ' ' }).ToList();
 
             ConnectionSettings connectionSettings = new ConnectionSettings(
                 new Uri("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243"))
@@ -45,7 +44,8 @@ namespace TwitterWebSearch.Controllers
             .Type("tweets")
             .From(0)
             .Size(10000)
-            .Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
+            .MatchAll()
+            //.Query(q => q.Match(m => m.Query(query).Field(f => f.text)))
             );
 
             List<Tweet> tweets = response.Hits.Select(val => val.Source).ToList();
@@ -60,13 +60,13 @@ namespace TwitterWebSearch.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string query, string distance, List<Tweet> tweets)
+        public ActionResult Search(string query, string distance)
         {
             SearchViewModel model = new SearchViewModel
             {
                 SearchText = query == null ? "" : query,
                 Distance = distance == null ? 0 : int.Parse(distance),
-                Tweets = tweets == null ? new List<Tweet>() : tweets
+                Tweets = new List<Tweet>()
             };
 
             return View(model);
@@ -84,11 +84,10 @@ namespace TwitterWebSearch.Controllers
             //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
             //if distance not entered default at 100 miles
             model.Tweets = rankedTweets
-                .Where(val => new GeoCoordinate(val.geo.coordinates[0], val.geo.coordinates[1]).GetDistanceTo(coord) < ((distance == 0 ? 3000 : distance) * 1609.344))
+                .Where(val => new GeoCoordinate(val.geo.coordinates[0], val.geo.coordinates[0]).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
                 .ToList();
 
-            return View(model);
-            //return RedirectToAction("Search", "Home", , new { query = searchText, distance = distance.ToString(), tweets = model.Tweets });
+            return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString(), model.Tweets });
         }
 
         // TESTBENCH

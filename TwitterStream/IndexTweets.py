@@ -45,13 +45,13 @@ class IndexTweets:
         return jsonList
 
 #use this instance of the IndexTweets object to perform desired function(s)
-idxTwts = IndexTweets
+#idxTwts = IndexTweets
 
-#getting the text field of a tweet by ID
-j = idxTwts.searchIndexByID("1100829985605107712")
-print(j['text'])
+##getting the text field of a tweet by ID
+#j = idxTwts.searchIndexByID("1100829985605107712")
+#print(j['text'])
 
-#searching by a query and printing matching results
-j = idxTwts.searchIndexByTweet("very own")
-for idxI, i in enumerate(j):
-    print("Score: " + str(i[idxI]['_score']) + "\nTweet: " + i[idxI]['_source']['text'] + "\n")
+##searching by a query and printing matching results
+#j = idxTwts.searchIndexByTweet("very own")
+#for idxI, i in enumerate(j):
+#    print("Score: " + str(i[idxI]['_score']) + "\nTweet: " + i[idxI]['_source']['text'] + "\n")
