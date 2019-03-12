@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -31,7 +31,7 @@ namespace TwitterWebSearch.Controllers
             return new GeoCoordinate(Convert.ToDouble(lat), Convert.ToDouble(lng));
         }
 
-        public static List<Tweet> GetTweets(string query)
+        public static List<Tweet> GetTweets(string query, string searchType)
         {
             ConnectionSettings connectionSettings = new ConnectionSettings(
                 new Uri("https://8e3c24de87514e9c86b35812c83002e0.us-west-1.aws.found.io:9243"))
@@ -48,12 +48,14 @@ namespace TwitterWebSearch.Controllers
 
             List<Tweet> tweets = new List<Tweet>();
             Tweet tweet;
+     
             foreach (IHit<Tweet> hit in response.Hits)
             {
                 tweet = hit.Source;
-                tweet.score = hit.Score.GetValueOrDefault();
+                tweet.score = (searchType == "Popularity") ? hit.Source.user.followers_count : hit.Score.GetValueOrDefault(); // Rank by number of followers or by elastic search score
                 tweets.Add(tweet);
             }
+
             tweets = tweets.OrderByDescending(val => val.score).ToList(); //make sure tweets are sorted by score
 
             return tweets;
@@ -79,7 +81,7 @@ namespace TwitterWebSearch.Controllers
             string searchText = model.SearchText; //what the user searched
             int distance = model.Distance;
 
-            List<Tweet> rankedTweets = GetTweets(searchText);
+            List<Tweet> rankedTweets = GetTweets(searchText, model.SearchType);
 
             //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
             //if distance not entered default at 100 miles
