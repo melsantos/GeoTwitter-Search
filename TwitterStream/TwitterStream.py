@@ -12,6 +12,7 @@ token = config('ACCESS_TOKEN')
 token_secret =config('ACCESS_SECRET')
 
 cur_path = os.path.dirname(os.path.realpath(__file__))
+tweet_path = os.path.join(cur_path, "geo_tweets", "%s tweets.json" % datetime.datetime.now().strftime('%m-%d %H-%M'))
 
 def connect():
     try:
@@ -35,10 +36,15 @@ def consume_tweets(iterator):
         except:
             return None
 
+    def write_tweet(tweet):
+        global tweet_path
+        tweet_out = open(tweet_path, "a+")
+        json.dump(tweet, tweet_out)
+        tweet_out.write('\n')
+        tweet_out.close()
+        return
+
     for tweet in iterator:
-        #if (datetime.datetime.now() - start) >= datetime.timedelta(minutes=60):     
-        #    print("It's been an hour, bye!")
-        #    break
         if tweet is Hangup:
             print("Connection broken at %s, bye!" % datetime.datetime.now().strftime('%H:%M'))
             break
@@ -56,7 +62,9 @@ def consume_tweets(iterator):
             if title:
                 tweet['title'] = title
             t = threading.Thread(target=it.indexLiveTweet, args=(json.dumps(tweet),))
+            w = threading.Thread(target=write_tweet, args=(tweet,))
             t.start()
+            w.start()
 
     return
 
@@ -76,6 +84,7 @@ def main():
             time.sleep(20)
             iterator = connect()
         retries = retries - 1
+
 
     print("Ended at %s" % datetime.datetime.now())
 
