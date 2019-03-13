@@ -48,7 +48,7 @@ namespace TwitterWebSearch.Controllers
 
             List<Tweet> tweets = new List<Tweet>();
             Tweet tweet;
-     
+
             foreach (IHit<Tweet> hit in response.Hits)
             {
                 tweet = hit.Source;
@@ -62,13 +62,13 @@ namespace TwitterWebSearch.Controllers
         }
 
         [HttpGet]
-        public ActionResult Search(string query, string distance)
+        public ActionResult Search(string query, string distance, List<Tweet> tweets)
         {
             SearchViewModel model = new SearchViewModel
             {
                 SearchText = query == null ? "" : query,
                 Distance = distance == null ? 0 : int.Parse(distance),
-                Tweets = new List<Tweet>()
+                Tweets = tweets == null ? new List<Tweet>() : tweets
             };
 
             return View(model);
@@ -86,10 +86,11 @@ namespace TwitterWebSearch.Controllers
             //getdistanceto returns meters so doing user entered distance miles * 1609.344 (meters per mile) to convert meters
             //if distance not entered default at 100 miles
             model.Tweets = rankedTweets
-                .Where(val => new GeoCoordinate(val.geo.coordinates[0], val.geo.coordinates[0]).GetDistanceTo(coord) < ((distance == 0 ? 100 : distance) * 1609.344))
+                .Where(val => new GeoCoordinate(val.geo.coordinates[0], val.geo.coordinates[1]).GetDistanceTo(coord) < ((distance == 0 ? 3000 : distance) * 1609.344))
                 .ToList();
 
-            return RedirectToAction("Search", "Home", new { query = searchText, distance = distance.ToString(), model.Tweets });
+            return View(model);
+            //return RedirectToAction("Search", "Home", , new { query = searchText, distance = distance.ToString(), tweets = model.Tweets });
         }
 
         // TESTBENCH
