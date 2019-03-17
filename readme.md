@@ -12,3 +12,18 @@ By Ryan Gray, Jesse Reyes, Joshua Riley, and Melissa Santos
  + [Python Twitter Tools](https://github.com/sixohsix/twitter) for getting Tweets
  + ElasticSearch for indexing Tweets
  + ASP.NET MVC for the web application interface and Twitter Geolocation map.
+ 
+ ## How to Use
+ 1. Method 1
+     * Download [Microsoft Visual Studio Community 2017](https://visualstudio.microsoft.com/downloads/)
+     * After running the software, open the `Team Explorer` tab located on the right
+     * Under `Local Git Repositories`, select the `Clone` option
+     * Enter `https://github.com/CS172-UCR/GeoTwitter-Search.git` as the URL of the git repo
+     * Enable the `Recursively Clone Submodules` option  
+     * Navigate to the solution folder under `GeoTwitter-Search/TwitterWebSearch/TwitterWebSearch`
+     * Open `TwitterWebSearch.sln`
+     * Run ISS Express (preferably with Google Chrome as the browser) by clicking the green play button at the top of the screen
+ <!--
+ 2. Method 2 (Relative Not Easy)
+     * In process
+-->
