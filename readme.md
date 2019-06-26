@@ -27,3 +27,9 @@ By Ryan Gray, Jesse Reyes, Joshua Riley, and Melissa Santos
  2. Method 2 (Relative Not Easy)
      * In process
 -->
+
+## Contributors
++ [Ryan Gray](https://github.com/ryangreay)
++ [Jesse Reyes](https://github.com/JesseAReyes1996)
++ [Joshua Riley](https://github.com/jrile002)
++ [Melissa Santos](https://github.com/melsantos)
